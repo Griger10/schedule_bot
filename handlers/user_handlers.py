@@ -1,6 +1,5 @@
 from aiogram import Router
 from aiogram.filters import CommandStart, Command
-from aiogram.fsm.state import StatesGroup, State
 from aiogram.types import Message, User
 from lexicon.lexicon import LEXICON
 
