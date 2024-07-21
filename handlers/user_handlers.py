@@ -18,4 +18,10 @@ async def help_handler(message: Message):
 
 @router.message(Command(commands=['monday']))
 async def monday_handler(message: Message):
-    await message.answer(text='Выберите тип недели')
+    await message.answer(text='Выберите тип недели', reply_markup=None)
+
+
+
+
+
+
