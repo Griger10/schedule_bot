@@ -2,7 +2,7 @@ import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from main_menu import set_main_menu
+from keyboards.main_menu import set_main_menu
 from config_data.config import load_config, Config
 from handlers import user_handlers, other_handlers
 

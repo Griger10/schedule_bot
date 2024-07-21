@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery
-from keyboards import build_command_keyboard
+from keyboards.keyboards import build_command_keyboard
 from lexicon.lexicon import LEXICON
 
 router = Router()
