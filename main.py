@@ -1,5 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from keyboards.main_menu import set_main_menu
