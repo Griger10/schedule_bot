@@ -62,6 +62,41 @@ async def tuesday_handler(message: Message):
                          )
 
 
-@router.callback_query(F.data == 'monday-numerator')
+@router.callback_query(F.data.startswith('monday'))
 async def monday_schedule_handler(callback_query: CallbackQuery):
-    await callback_query.answer('Это расписание на понедельник')
+    if callback_query.data == 'monday-numerator':
+        await callback_query.message.edit_text(text='Это расписание на понедельник числительный')
+    else:
+        await callback_query.message.edit_text(text='Это расписание на понедельник знаменательный')
+
+
+@router.callback_query(F.data.startswith('tuesday'))
+async def monday_schedule_handler(callback_query: CallbackQuery):
+    if callback_query.data == 'tuesday-numerator':
+        await callback_query.message.edit_text(text='Это расписание на вторник числительный')
+    else:
+        await callback_query.message.edit_text(text='Это расписание на вторник знаменательный')
+
+
+@router.callback_query(F.data.startswith('wednesday'))
+async def monday_schedule_handler(callback_query: CallbackQuery):
+    if callback_query.data == 'wednesday-numerator':
+        await callback_query.message.edit_text(text='Это расписание на среду числительную')
+    else:
+        await callback_query.message.edit_text(text='Это расписание на среду знаменательную')
+
+
+@router.callback_query(F.data.startswith('thursday'))
+async def monday_schedule_handler(callback_query: CallbackQuery):
+    if callback_query.data == 'thursday-numerator':
+        await callback_query.message.edit_text(text='Это расписание на четверг числительный')
+    else:
+        await callback_query.message.edit_text(text='Это расписание на четверг знаменательный')
+
+
+@router.callback_query(F.data.startswith('friday'))
+async def monday_schedule_handler(callback_query: CallbackQuery):
+    if callback_query.data == 'friday-numerator':
+        await callback_query.message.edit_text(text='Это расписание на пятницу числительную')
+    else:
+        await callback_query.message.edit_text(text='Это расписание на пятницу знаменательную')
