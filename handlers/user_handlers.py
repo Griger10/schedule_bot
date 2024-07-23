@@ -17,86 +17,17 @@ async def help_handler(message: Message):
     await message.answer(text=LEXICON['help'])
 
 
-@router.message(Command(commands=['monday']))
-async def monday_handler(message: Message):
+@router.message(Command(commands=['monday', 'tuesday', 'wednesday', 'thursday', 'friday']))
+async def day_handler(message: Message):
     await message.answer(text='Выберите тип недели',
                          reply_markup=build_command_keyboard
-                         ('monday-numerator',
-                          'monday-denominator')
+                         (f'{message.text}-numerator',
+                          f'{message.text}-denominator')
                          )
 
 
-@router.message(Command(commands=['tuesday']))
-async def tuesday_handler(message: Message):
-    await message.answer(text='Выберите тип недели',
-                         reply_markup=build_command_keyboard
-                         ('tuesday-numerator',
-                          'tuesday-denominator')
-                         )
+@router.callback_query(F.data.endswith('numerator') | F.data.endswith('denominator'))
+async def schedule_handler(callback_query: CallbackQuery):
+    await callback_query.message.edit_text(text=f'Это расписание на {callback_query.message.split('-')[0]}')
 
 
-@router.message(Command(commands=['wednesday']))
-async def tuesday_handler(message: Message):
-    await message.answer(text='Выберите тип недели',
-                         reply_markup=build_command_keyboard
-                         ('wednesday-numerator',
-                          'wednesday-denominator')
-                         )
-
-
-@router.message(Command(commands=['thursday']))
-async def tuesday_handler(message: Message):
-    await message.answer(text='Выберите тип недели',
-                         reply_markup=build_command_keyboard
-                         ('thursday-numerator',
-                          'thursday-denominator')
-                         )
-
-
-@router.message(Command(commands=['tuesday']))
-async def tuesday_handler(message: Message):
-    await message.answer(text='Выберите тип недели',
-                         reply_markup=build_command_keyboard
-                         ('tuesday-numerator',
-                          'tuesday-denominator')
-                         )
-
-
-@router.callback_query(F.data.startswith('monday'))
-async def monday_schedule_handler(callback_query: CallbackQuery):
-    if callback_query.data == 'monday-numerator':
-        await callback_query.message.edit_text(text='Это расписание на понедельник числительный')
-    else:
-        await callback_query.message.edit_text(text='Это расписание на понедельник знаменательный')
-
-
-@router.callback_query(F.data.startswith('tuesday'))
-async def monday_schedule_handler(callback_query: CallbackQuery):
-    if callback_query.data == 'tuesday-numerator':
-        await callback_query.message.edit_text(text='Это расписание на вторник числительный')
-    else:
-        await callback_query.message.edit_text(text='Это расписание на вторник знаменательный')
-
-
-@router.callback_query(F.data.startswith('wednesday'))
-async def monday_schedule_handler(callback_query: CallbackQuery):
-    if callback_query.data == 'wednesday-numerator':
-        await callback_query.message.edit_text(text='Это расписание на среду числительную')
-    else:
-        await callback_query.message.edit_text(text='Это расписание на среду знаменательную')
-
-
-@router.callback_query(F.data.startswith('thursday'))
-async def monday_schedule_handler(callback_query: CallbackQuery):
-    if callback_query.data == 'thursday-numerator':
-        await callback_query.message.edit_text(text='Это расписание на четверг числительный')
-    else:
-        await callback_query.message.edit_text(text='Это расписание на четверг знаменательный')
-
-
-@router.callback_query(F.data.startswith('friday'))
-async def monday_schedule_handler(callback_query: CallbackQuery):
-    if callback_query.data == 'friday-numerator':
-        await callback_query.message.edit_text(text='Это расписание на пятницу числительную')
-    else:
-        await callback_query.message.edit_text(text='Это расписание на пятницу знаменательную')
