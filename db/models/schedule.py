@@ -35,6 +35,7 @@ class Schedule(Base):
     audience: Mapped[str]
     lesson_id: Mapped[int] = mapped_column(ForeignKey("lesson.id"))
     type: Mapped[LessonTypes | None] = mapped_column(nullable=True)
+    group: Mapped[int]
 
 
 
