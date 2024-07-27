@@ -31,3 +31,8 @@ async def schedule_handler(callback_query: CallbackQuery):
     await callback_query.message.edit_text(text=f'Это расписание на {callback_query.message.split('-')[0]}')
 
 
+@router.message(Command(commands=['set_group']))
+async def set_group_handler(message: Message):
+    await update_group(session)
+
+
