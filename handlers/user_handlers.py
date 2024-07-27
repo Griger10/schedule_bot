@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery
+from db.queries import update_group
 from keyboards.keyboards import build_command_keyboard
 from lexicon.lexicon import LEXICON
 
@@ -32,7 +33,8 @@ async def schedule_handler(callback_query: CallbackQuery):
 
 
 @router.message(Command(commands=['set_group']))
-async def set_group_handler(message: Message):
-    await update_group(session)
+async def set_group_handler(message: Message, session):
+    await update_group(session, message.from_user.id, message.text.split()[1])
+    await message.answer('Ваша группа успешно установлена!')
 
 
