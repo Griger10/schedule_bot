@@ -24,8 +24,7 @@ class TrackAllUsersMiddleware(BaseMiddleware):
             await upsert_user(
                 session=session,
                 telegram_id=event.from_user.id,
-                first_name=event.from_user.first_name,
-                group=None,
+                first_name=event.from_user.first_name
             )
             self.cache[user_id] = None
 
