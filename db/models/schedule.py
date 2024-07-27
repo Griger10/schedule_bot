@@ -27,7 +27,7 @@ class LessonNumbers(enum.Enum):
 
 
 class Schedule(Base):
-    __tablename__ = 'ip123-schedule'
+    __tablename__ = 'schedule'
 
     id: Mapped[int] = mapped_column(primary_key=True)
     day: Mapped[Days]
