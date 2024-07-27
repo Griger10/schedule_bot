@@ -12,7 +12,7 @@ class TrackAllUsersMiddleware(BaseMiddleware):
         super().__init__()
         self.cache = TTLCache(
             maxsize=1000,
-            ttl=60 * 60 * 24,  # 6 часов
+            ttl=60 * 60 * 24,  # 24 часа
         )
 
     async def __call__(self, handler, event, data, ):

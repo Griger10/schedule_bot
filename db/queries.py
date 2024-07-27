@@ -1,4 +1,5 @@
 from db import User
+from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as upsert
 
 
@@ -17,3 +18,13 @@ async def update_group(session, telegram_id, group_id):
     user = await session.get(User, {'telegram_id': telegram_id})
     user.group = group_id
     await session.commit()
+
+
+async def get_group(session, telegram_id):
+    user = await session.get(User, {'telegram_id': telegram_id})
+    return user.group
+
+
+async def get_lessons(session, telegram_id):
+    group = await get_group(session, telegram_id)
+    stmt = select()
