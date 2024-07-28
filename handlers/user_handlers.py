@@ -10,17 +10,17 @@ router = Router()
 
 
 @router.message(CommandStart())
-async def start_handler(session, message: Message):
+async def start_handler(message: Message):
     await message.answer(text=LEXICON['start'])
 
 
 @router.message(Command(commands=['help']))
-async def help_handler(session, message: Message):
+async def help_handler(message: Message):
     await message.answer(text=LEXICON['help'])
 
 
 @router.message(Command(commands=['monday', 'tuesday', 'wednesday', 'thursday', 'friday']))
-async def day_handler(session, message: Message):
+async def day_handler(message: Message, session):
     await message.answer(text='Выберите тип недели',
                          reply_markup=build_command_keyboard
                          (f'{message.text}-numerator',
@@ -29,7 +29,7 @@ async def day_handler(session, message: Message):
 
 
 @router.callback_query(F.data.endswith('numerator') | F.data.endswith('denominator'))
-async def schedule_handler(session, callback_query: CallbackQuery):
+async def schedule_handler(callback_query: CallbackQuery, session):
     day = callback_query.data.split('-')[0]
 
     if callback_query.data.endswith('numerator'):
@@ -43,7 +43,7 @@ async def schedule_handler(session, callback_query: CallbackQuery):
 
 
 @router.message(Command(commands=['set_group']))
-async def set_group_handler(session, message: Message):
+async def set_group_handler(message: Message, session):
     await update_group(session, message.from_user.id, message.text.split()[1])
     await message.answer('Ваша группа успешно установлена!')
 

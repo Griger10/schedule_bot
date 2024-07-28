@@ -15,7 +15,7 @@ class TrackAllUsersMiddleware(BaseMiddleware):
             ttl=60 * 60 * 24,  # 24 часа
         )
 
-    async def __call__(self, handler, event, data, ):
+    async def __call__(self, handler, event, data):
         event = cast(Message, event)
         user_id = event.from_user.id
 
