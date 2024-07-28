@@ -10,8 +10,8 @@ days = {
 }
 
 
-async def upsert_user(session, telegram_id, first_name, group=None):
-    stmt = upsert(User).values(telegram_id=telegram_id,
+async def upsert_user(session, user_id, first_name, group=None):
+    stmt = upsert(User).values(id=user_id,
                                first_name=first_name,
                                group=group)
     stmt.on_conflict_do_update(index_elements=['telegram_id'],
