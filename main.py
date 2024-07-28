@@ -24,6 +24,7 @@ async def main():
         await connection.execute(text('SELECT 1'))
 
     async with engine.begin() as connection:
+        await connection.run_sync(Base.metadata.drop_all)
         await connection.run_sync(Base.metadata.create_all)
 
     session_maker = async_sessionmaker(engine, expire_on_commit=False)
