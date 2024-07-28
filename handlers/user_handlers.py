@@ -1,7 +1,8 @@
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery
-from db.queries import update_group
+from db.models import lesson
+from db.queries import update_group, get_lessons
 from keyboards.keyboards import build_command_keyboard
 from lexicon.lexicon import LEXICON
 
@@ -28,7 +29,16 @@ async def day_handler(message: Message):
 
 
 @router.callback_query(F.data.endswith('numerator') | F.data.endswith('denominator'))
-async def schedule_handler(callback_query: CallbackQuery):
+async def schedule_handler(session, callback_query: CallbackQuery):
+    day = callback_query.data.split('-')[0]
+    if callback_query.data.endswith('numerator'):
+        lessons_data = await get_lessons(session, callback_query.from_user.id, 'numerator', day)
+        result = '\n'.join(f'{item[0]} - {item[2]} - {item[1]}' for item in lessons_data)
+        await callback_query.answer('Расписание на день:\n\n' + result)
+    else:
+        lessons_data = await get_lessons(session, callback_query.from_user.id, 'denominator', day)
+        result = '\n'.join(f'{item[0]} - {item[2]} - {item[1]}' for item in lessons_data)
+        await callback_query.answer('Расписание на день:\n\n' + result)
     await callback_query.message.edit_text(text=f'Это расписание на {callback_query.message.split('-')[0]}')
 
 

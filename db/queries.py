@@ -1,7 +1,13 @@
 from db import User, Schedule, Lesson
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as upsert
-from sqlalchemy.orm import aliased
+from sqlalchemy.orm import aliased, join
+
+days = {
+    'monday': 1, 'tuesday': 2,
+    'wednesday': 3, 'thursday': 4,
+    'friday': 5
+}
 
 
 async def upsert_user(session, telegram_id, first_name, group=None):
@@ -26,12 +32,14 @@ async def get_group(session, telegram_id):
     return user.group
 
 
-async def get_lessons(session, telegram_id, type_of_week):
+async def get_lessons(session, telegram_id, type_of_week, day):
+    types_of_week = {'numerator': 1, 'denominator': 2}
     group = await get_group(session, telegram_id)
     s = aliased(Schedule)
     ls = aliased(Lesson)
-    query = (select(s.number_of_lesson, s.audience, ls.name).join(ls, ls.id == s.lesson_id).
-             where(s.group == group, s.type.in_([type_of_week, None]))
+    tables = join(Schedule, Lesson, Schedule.lesson_id == Lesson.id)
+    query = (select(s.number_of_lesson, s.audience, ls.name).select_from(tables).
+             where(s.group == group, s.day == day, s.type.in_([types_of_week[type_of_week], None]))
              .order_by(s.number_of_lesson))
     result = await session.execute(query)
     return result.all()
