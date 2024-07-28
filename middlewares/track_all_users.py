@@ -17,7 +17,7 @@ class TrackAllUsersMiddleware(BaseMiddleware):
 
     async def __call__(self, handler, event, data, ):
         event = cast(Message, event)
-        user_id = event.message.from_user.id
+        user_id = event.from_user.id
 
         if user_id not in self.cache:
             session: AsyncSession = data["session"]
