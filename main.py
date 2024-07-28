@@ -1,4 +1,5 @@
 import asyncio
+import sys
 from aiogram import Bot, Dispatcher
 from db import Base
 from middlewares import DatabaseMiddleware, TrackAllUsersMiddleware
@@ -12,6 +13,7 @@ from handlers import user_handlers, other_handlers
 
 
 async def main():
+
     db_config = get_config(DbConfig, 'db')
 
     bot_config = get_config(BotConfig, "bot")
@@ -43,4 +45,6 @@ async def main():
 
 
 if __name__ == '__main__':
+    if sys.platform == "win32":
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     asyncio.run(main())
