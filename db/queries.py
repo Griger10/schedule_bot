@@ -39,7 +39,7 @@ async def get_lessons(session, telegram_id, type_of_week, day):
     ls = aliased(Lesson)
     tables = join(Schedule, Lesson, Schedule.lesson_id == Lesson.id)
     query = (select(s.number_of_lesson, s.audience, ls.name).select_from(tables).
-             where(s.group == group, s.day == day, s.type.in_([types_of_week[type_of_week], None]))
+             where(s.group == group, s.day == days[day], s.type.in_([types_of_week[type_of_week], None]))
              .order_by(s.number_of_lesson))
     result = await session.execute(query)
     return result.all()
