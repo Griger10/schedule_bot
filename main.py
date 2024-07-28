@@ -16,7 +16,7 @@ async def main():
 
     bot_config = get_config(BotConfig, "bot")
 
-    engine = create_async_engine(url=db_config.dsn, echo=db_config.is_echo)
+    engine = create_async_engine(url=str(db_config.dsn), echo=db_config.is_echo)
 
     async with engine.begin() as connection:
         await connection.execute(text('SELECT 1'))
