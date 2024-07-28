@@ -34,7 +34,6 @@ async def schedule_handler(callback_query: CallbackQuery, session):
 
     if callback_query.data.endswith('numerator'):
         lessons_data = await get_lessons(session, callback_query.from_user.id, 'numerator', day)
-
     else:
         lessons_data = await get_lessons(session, callback_query.from_user.id, 'denominator', day)
 
