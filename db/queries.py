@@ -1,4 +1,4 @@
-from db import User, Schedule, Lesson
+from db import User, Schedule, Lesson, Group
 from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as upsert
 from sqlalchemy.orm import aliased, join
@@ -30,6 +30,12 @@ async def update_group(session, telegram_id, group_id):
 async def get_group(session, telegram_id):
     user = await session.get(User, telegram_id)
     return user.group
+
+
+async def get_groups(session):
+    stmt = select(Group.id, Group.name).select_from(Group)
+    result = await session.execute(stmt)
+    return [f'{group.id}-{group.name}' for group in result]
 
 
 async def get_lessons(session, telegram_id, type_of_week, day):
