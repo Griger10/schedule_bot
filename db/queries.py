@@ -35,7 +35,7 @@ async def get_group(session, telegram_id):
 async def get_groups(session):
     stmt = select(Group.id, Group.name).select_from(Group)
     result = await session.execute(stmt)
-    return [f'{group.id}-{group.name}' for group in result]
+    return '\n'.join([f'{group.id}-{group.name}' for group in result])
 
 
 async def get_lessons(session, telegram_id, type_of_week, day):

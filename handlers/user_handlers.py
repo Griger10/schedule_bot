@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery
 from db.models import lesson
-from db.queries import update_group, get_lessons
+from db.queries import update_group, get_lessons, get_groups
 from keyboards.keyboards import build_command_keyboard
 from lexicon.lexicon import LEXICON
 
@@ -15,8 +15,9 @@ async def start_handler(message: Message):
 
 
 @router.message(Command(commands=['help']))
-async def help_handler(message: Message):
-    await message.answer(text=LEXICON['help'])
+async def help_handler(message: Message, session):
+    groups = await get_groups(session)
+    await message.answer(text=LEXICON['help'] + groups + '\nПример использования: /set_group 1')
 
 
 @router.message(Command(commands=['monday', 'tuesday', 'wednesday', 'thursday', 'friday']))
