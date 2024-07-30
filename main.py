@@ -30,7 +30,7 @@ async def main():
     session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
     bot = Bot(token=bot_config.token.get_secret_value(), default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-    dp = Dispatcher()
+    dp = Dispatcher(admin_id=bot_config.admin_id)
 
     dp.update.outer_middleware(DatabaseMiddleware(session_maker))
     dp.message.outer_middleware(TrackAllUsersMiddleware())

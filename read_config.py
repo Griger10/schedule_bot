@@ -16,6 +16,7 @@ ConfigType = TypeVar("ConfigType", bound=BaseModel)
 
 class BotConfig(BaseModel):
     token: SecretStr
+    admin_id: int
 
 
 class DbConfig(BaseModel):
@@ -23,7 +24,7 @@ class DbConfig(BaseModel):
     is_echo: bool
 
 
-@lru_cache
+@lru_cache(maxsize=1)
 def parse_config_file(path: str | None = None) -> dict:
     env = Env()
     env.read_env(path)

@@ -50,3 +50,9 @@ async def get_lessons(session, telegram_id, type_of_week, day):
              .order_by(s.number_of_lesson))
     result = await session.execute(query)
     return result.all()
+
+
+async def add_group(session, group_name):
+    stmt = upsert(Group).values(name=group_name)
+    session.execute(stmt)
+    session.commit()
