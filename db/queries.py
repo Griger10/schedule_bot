@@ -65,6 +65,6 @@ async def add_lesson(session, lesson_name):
 
 
 async def delete_lesson(session, lesson_name):
-    stmt = delete(Lesson).where(Lesson.name == lesson_name)
+    stmt = delete(Lesson).where(Lesson.name == lesson_name.lower())
     await session.execute(stmt)
     await session.commit()
