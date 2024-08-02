@@ -1,5 +1,5 @@
 from db import User, Schedule, Lesson, Group
-from sqlalchemy import select
+from sqlalchemy import select, cast, Integer
 from sqlalchemy.dialects.postgresql import insert as upsert
 from sqlalchemy.orm import aliased, join
 
@@ -35,7 +35,7 @@ async def get_group(session, telegram_id):
 async def get_groups(session):
     stmt = select(Group.id, Group.name).select_from(Group)
     result = await session.execute(stmt)
-    return '\n'.join([f'{group.id}-{group.name}' for group in result])
+    return '\n'.join([f'{group.id} - {group.name}' for group in result])
 
 
 async def get_lessons(session, telegram_id, type_of_week, day):
@@ -54,5 +54,11 @@ async def get_lessons(session, telegram_id, type_of_week, day):
 
 async def add_group(session, group_name):
     stmt = upsert(Group).values(name=group_name)
-    session.execute(stmt)
-    session.commit()
+    await session.execute(stmt)
+    await session.commit()
+
+
+async def add_lesson(session, lesson_name):
+    stmt = upsert(Lesson).values(name=lesson_name)
+    await session.execute(stmt)
+    await session.commit()

@@ -17,7 +17,7 @@ async def start_handler(message: Message):
 @router.message(Command(commands=['help']))
 async def help_handler(message: Message, session):
     groups = await get_groups(session)
-    await message.answer(text=LEXICON['help'] + groups + '\nПример использования: /set_group 1')
+    await message.answer(text=LEXICON['help'] + groups + '\n\nПример использования: /set_group 1')
 
 
 @router.message(Command(commands=['monday', 'tuesday', 'wednesday', 'thursday', 'friday']))
@@ -46,5 +46,8 @@ async def schedule_handler(callback_query: CallbackQuery, session):
 async def set_group_handler(message: Message, session):
     await update_group(session, message.from_user.id, message.text.split()[1])
     await message.answer('Ваша группа успешно установлена!')
+
+
+
 
 

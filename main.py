@@ -9,7 +9,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from keyboards.main_menu import set_main_menu
 from read_config import get_config, BotConfig, DbConfig
-from handlers import user_handlers, other_handlers
+from handlers import user_handlers, other_handlers, admin_handlers
 
 
 async def main():
@@ -37,6 +37,7 @@ async def main():
 
     await set_main_menu(bot)
 
+    dp.include_router(admin_handlers.router)
     dp.include_router(user_handlers.router)
     dp.include_router(other_handlers.router)
 

@@ -1,6 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import MagicData, Command
 from aiogram.types import Message
+from db.queries import add_group, add_lesson
 from lexicon.lexicon import ADMIN_LEXICON
 
 router = Router(name='admin_handlers')
@@ -14,8 +15,18 @@ async def admin_handler(message: Message):
 
 
 @router.message(Command(commands=['add_group']))
-async def add_group_handler(message: Message):
+async def add_group_handler(message: Message, session):
     elements = message.text.split()
     group_name = elements[1]
-    await add_group(group_name)
+    await add_group(session, group_name)
     await message.answer('Группа успешно добавлена в БД!')
+
+
+@router.message(Command(commands=['add_lesson']))
+async def add_lesson_handler(message: Message, session):
+    lesson_name = message.text.split()[1].strip()
+    await add_lesson(session, lesson_name)
+    await message.answer('Предмет успешно добавлен в БД!')
+
+
+
