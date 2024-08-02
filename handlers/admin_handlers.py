@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.filters import MagicData, Command
 from aiogram.types import Message
-from db.queries import add_group, add_lesson
+from db.queries import add_group, add_lesson, delete_lesson
 from lexicon.lexicon import ADMIN_LEXICON
 
 router = Router(name='admin_handlers')
@@ -29,4 +29,8 @@ async def add_lesson_handler(message: Message, session):
     await message.answer('Предмет успешно добавлен в БД!')
 
 
-
+@router.message(Command(commands=['delete_lesson']))
+async def delete_lesson_handler(message: Message, session):
+    lesson_name = message.text.split()[1].strip()
+    await delete_lesson(session, lesson_name)
+    await message.answer('Предмет успешно удален из БД предметов!')

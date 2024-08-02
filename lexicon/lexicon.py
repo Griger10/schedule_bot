@@ -1,8 +1,3 @@
-from db.queries import get_groups
-import asyncio
-
-from sqlalchemy.ext.asyncio import async_sessionmaker
-
 LEXICON_COMMANDS = {'/help': 'Справка по работе бота',
                     '/monday': 'Расписание на понедельник',
                     '/tuesday': 'Расписание на вторник',
@@ -19,5 +14,7 @@ LEXICON = {'start': f'Привет!\n\nЭтот бот позволяет пол
                    f'с номером вашей группы из следующего списка:\n\n'}
 
 
-ADMIN_LEXICON = {'admin': 'Админ-панель предлагает следующий функционал:\n\n/add_group - добавление группы в БД\n'
-                          'Пример: /add_group ipsp123'}
+ADMIN_LEXICON = {'admin': 'Админ-панель предлагает следующий функционал:\n\n/add_group - добавление группы в БД\n\n'
+                          '/add_lesson - Добавление предмета в БД\n\n'
+                          '/delete_lesson - Удаление предмета из БД\n\n'
+                          'Примеры: \n/add_group ipsp123\n/add_lesson maths\n/delete_lesson maths'}

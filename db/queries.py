@@ -1,5 +1,5 @@
 from db import User, Schedule, Lesson, Group
-from sqlalchemy import select, cast, Integer
+from sqlalchemy import select, cast, Integer, delete
 from sqlalchemy.dialects.postgresql import insert as upsert
 from sqlalchemy.orm import aliased, join
 
@@ -53,12 +53,18 @@ async def get_lessons(session, telegram_id, type_of_week, day):
 
 
 async def add_group(session, group_name):
-    stmt = upsert(Group).values(name=group_name)
+    stmt = upsert(Group).values(name=group_name.lower())
     await session.execute(stmt)
     await session.commit()
 
 
 async def add_lesson(session, lesson_name):
-    stmt = upsert(Lesson).values(name=lesson_name)
+    stmt = upsert(Lesson).values(name=lesson_name.lower())
+    await session.execute(stmt)
+    await session.commit()
+
+
+async def delete_lesson(session, lesson_name):
+    stmt = delete(Lesson).where(Lesson.name == lesson_name)
     await session.execute(stmt)
     await session.commit()
