@@ -1,12 +1,10 @@
 from aiogram import Router, F, Bot
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery
-from db.models import lesson
 from db.queries import update_group, get_lessons, get_groups
 from fluentogram import TranslatorRunner
 from keyboards.keyboards import build_command_keyboard
 from keyboards.main_menu import set_main_menu
-from lexicon.lexicon import LEXICON
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = Router()

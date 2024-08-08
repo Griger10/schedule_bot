@@ -1,6 +1,5 @@
 from aiogram.types import BotCommand
 from fluentogram import TranslatorRunner
-from lexicon.lexicon import LEXICON_COMMANDS
 
 
 async def set_main_menu(bot, i18n: TranslatorRunner):

@@ -8,7 +8,6 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from keyboards.main_menu import set_main_menu
 from read_config import get_config, BotConfig, DbConfig
 from handlers import user_handlers, other_handlers, admin_handlers
 from utils.i18n import create_translator_hub

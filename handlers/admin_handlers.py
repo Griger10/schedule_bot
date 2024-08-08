@@ -3,7 +3,6 @@ from aiogram.filters import MagicData, Command
 from aiogram.types import Message
 from db.queries import add_group, add_lesson, delete_lesson
 from fluentogram import TranslatorRunner
-from lexicon.lexicon import ADMIN_LEXICON
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = Router(name='admin_handlers')
