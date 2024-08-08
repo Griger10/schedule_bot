@@ -1,5 +1,4 @@
 import asyncio
-import logging
 import sys
 from aiogram import Bot, Dispatcher
 from db import Base
@@ -13,10 +12,6 @@ from keyboards.main_menu import set_main_menu
 from read_config import get_config, BotConfig, DbConfig
 from handlers import user_handlers, other_handlers, admin_handlers
 from utils.i18n import create_translator_hub
-
-logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(name)s - %(levelname)s - %(message)')
-
-logger = logging.getLogger(__name__)
 
 
 async def main():

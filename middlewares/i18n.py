@@ -1,8 +1,4 @@
-import logging
-
 from aiogram import BaseMiddleware
-
-logger = logging.getLogger(__name__)
 
 
 class TranslatorRunnerMiddleware(BaseMiddleware):

@@ -48,6 +48,12 @@ numerator-numerator = Числитель
 
 denominator-denominator = Знаменатель
 
+group-added = Группа { $group } успешно добавлена в БД!
+
+lesson-added = Предмет { $lesson } успешно добавлен в БД предметов!
+
+lesson-deleted = Предмет { $lesson } успешно удален из БД предметов!
+
 
 
 

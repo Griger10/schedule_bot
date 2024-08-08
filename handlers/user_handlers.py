@@ -1,4 +1,4 @@
-from aiogram import Router, F
+from aiogram import Router, F, Bot
 from aiogram.filters import CommandStart, Command
 from aiogram.types import Message, CallbackQuery
 from db.models import lesson
@@ -7,14 +7,15 @@ from fluentogram import TranslatorRunner
 from keyboards.keyboards import build_command_keyboard
 from keyboards.main_menu import set_main_menu
 from lexicon.lexicon import LEXICON
+from sqlalchemy.ext.asyncio import AsyncSession
 
 router = Router()
 
 
 @router.message(CommandStart())
-async def start_handler(message: Message, i18n: TranslatorRunner):
+async def start_handler(message: Message, i18n: TranslatorRunner, bot: Bot):
     username = message.from_user.full_name
-    await set_main_menu()
+    await set_main_menu(bot, i18n)
     await message.answer(text=i18n.start.start(username=username))
 
 
@@ -25,7 +26,7 @@ async def help_handler(message: Message, session, i18n: TranslatorRunner):
 
 
 @router.message(Command(commands=['monday', 'tuesday', 'wednesday', 'thursday', 'friday']))
-async def day_handler(message: Message, session, i18n: TranslatorRunner):
+async def day_handler(message: Message, i18n: TranslatorRunner):
     await message.answer(text=i18n.choose.week(),
                          reply_markup=build_command_keyboard
                          (numerator=i18n.numerator.numerator(),
@@ -36,7 +37,7 @@ async def day_handler(message: Message, session, i18n: TranslatorRunner):
 
 
 @router.callback_query(F.data.endswith('numerator') | F.data.endswith('denominator'))
-async def schedule_handler(callback_query: CallbackQuery, session, i18n: TranslatorRunner):
+async def schedule_handler(callback_query: CallbackQuery, session: AsyncSession, i18n: TranslatorRunner):
     day = callback_query.data.split('-')[0]
 
     if callback_query.data.endswith('numerator'):
@@ -49,7 +50,7 @@ async def schedule_handler(callback_query: CallbackQuery, session, i18n: Transla
 
 
 @router.message(Command(commands=['set_group']))
-async def set_group_handler(message: Message, session, i18n: TranslatorRunner):
+async def set_group_handler(message: Message, session: AsyncSession, i18n: TranslatorRunner):
     await update_group(session, message.from_user.id, message.text.split()[1])
     await message.answer(i18n.group.success())
 
