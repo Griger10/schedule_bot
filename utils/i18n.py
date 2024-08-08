@@ -11,5 +11,6 @@ def create_translator_hub() -> TranslatorHub:
                                                locale='ru-RU',
                                                filenames=['locales/ru/LC_MESSAGES/txt.ftl']
                                            )),
-                                   ])
+                                   ],
+                                   root_locale='ru')
     return translator_hub
