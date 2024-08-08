@@ -44,7 +44,10 @@ async def schedule_handler(callback_query: CallbackQuery, session: AsyncSession,
         lessons_data = await get_lessons(session, callback_query.from_user.id, 'denominator', day)
 
     result = '\n'.join(f'{item[0]} - {item[2]} - {item[1]}' for item in lessons_data)
+
     await callback_query.message.edit_text(i18n.day.schedule() + '\n\n' + result)
+
+    await callback_query.answer()
 
 
 @router.message(Command(commands=['set_group']))
