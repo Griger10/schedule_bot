@@ -1,0 +1,63 @@
+version: 1
+disable_existing_loggers: True
+formatters:
+  default:
+    format: '#%(levelname)-8s %(name)s:%(funcName)s - %(message)s'
+
+  formatter-main:
+    format: '#%(levelname)-8s [%(asctime)s] - %(filename)s:%(lineno)d - %(name)s:%(funcName)s - %(message)s'
+
+filters:
+  critical-filter:
+    (): log_filters.CriticalLogFilter
+
+  error-filter:
+    (): log_filters.ErrorLogFilter
+
+  warning-filter:
+    (): log_filters.WarningLogFilter
+
+handlers:
+  default:
+    class: logging.StreamHandler
+    formatter: default
+
+  stderr:
+    class: logging.StreamHandler
+
+  stdout:
+    class: logging.StreamHandler
+    formatter: formatter-main
+    filters: [warning-filter]
+
+  error-file:
+    class: logging.FileHandler
+    filename: error.log
+    mode: w
+    level: WARNING
+    formatter: formatter-main
+    filters: [error-filter]
+
+  critical-file:
+    class: logging.FileHandler
+    filename: critical.log
+    mode: w
+    level: CRITICAL
+    formatter: formatter-main
+    filters: [critical-filter]
+
+loggers:
+  user_handlers:
+    level: WARNING
+    handlers: [error-file]
+
+  admin_handlers:
+    level: CRITICAL
+    handlers: [critical-file]
+
+root:
+  formatter: default
+  handlers: [default]
+
+
+

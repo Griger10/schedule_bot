@@ -1,5 +1,7 @@
 import asyncio
 import sys
+import logging.config
+import yaml
 from aiogram import Bot, Dispatcher
 from db import Base
 from middlewares import DatabaseMiddleware, TrackAllUsersMiddleware
@@ -11,6 +13,11 @@ from aiogram.enums import ParseMode
 from read_config import get_config, BotConfig, DbConfig
 from handlers import user_handlers, other_handlers, admin_handlers
 from utils.i18n import create_translator_hub
+
+with open('logging-config.yaml', 'rt') as f:
+    config = yaml.safe_load(f.read())
+
+logging.config.dictConfig(config)
 
 
 async def main():
