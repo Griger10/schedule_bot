@@ -7,6 +7,7 @@ from fluentogram import TranslatorRunner
 from keyboards.keyboards import build_command_keyboard
 from keyboards.main_menu import set_main_menu
 from sqlalchemy.ext.asyncio import AsyncSession
+from utils.utils import formatter
 
 router = Router()
 
@@ -28,7 +29,7 @@ async def start_handler(message: Message, i18n: TranslatorRunner, bot: Bot):
 async def help_handler(message: Message, session, i18n: TranslatorRunner):
     try:
         groups = await get_groups(session)
-        await message.answer(text=i18n.help.full() + groups + '\n\n' + i18n.example.example())
+        await message.answer(text=i18n.help.full() + '\n\n' + groups + '\n\n' + i18n.example.example())
 
     except Exception as e:
         logger.error('Error while processing help command', exc_info=e)
@@ -52,19 +53,18 @@ async def day_handler(message: Message, i18n: TranslatorRunner):
 async def schedule_handler(callback_query: CallbackQuery, session: AsyncSession, i18n: TranslatorRunner):
     try:
         day = callback_query.data.split('-')[0]
+        type_of_week = callback_query.data.split('-')[1]
 
-        if callback_query.data.endswith('numerator'):
-            lessons_data = await get_lessons(session, callback_query.from_user.id, 'numerator', day)
-        else:
-            lessons_data = await get_lessons(session, callback_query.from_user.id, 'denominator', day)
+        lessons_data = await get_lessons(session, callback_query.from_user.id, type_of_week, day)
 
-        result = '\n'.join(f'{item[0]} - {item[2]} - {item[1]}' for item in lessons_data)
+        result = await formatter(lessons_data)
 
         await callback_query.message.edit_text(i18n.day.schedule() + '\n\n' + result)
 
         await callback_query.answer()
 
     except Exception as e:
+        await callback_query.message.edit_text(i18n.day.failure())
         logger.error('Error while processing schedule command', exc_info=e)
 
 

@@ -5,7 +5,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
-
 class Schedule(Base):
     __tablename__ = 'schedule'
 
@@ -16,6 +15,3 @@ class Schedule(Base):
     lesson_id: Mapped[int] = mapped_column(ForeignKey("lessons.id"))
     type: Mapped[int | None] = mapped_column(nullable=True)
     group: Mapped[int] = mapped_column(ForeignKey("groups.id"))
-
-
-
