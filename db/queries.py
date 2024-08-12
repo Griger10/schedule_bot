@@ -21,9 +21,11 @@ async def upsert_user(session, user_id, first_name, group=None):
     await session.commit()
 
 
-async def update_group(session, telegram_id, group_id):
+async def update_group(session, telegram_id, group_name):
     user = await session.get(User, telegram_id)
-    user.group = group_id
+    stmt = select(Group.id).select_from(Group).where(Group.name == group_name)
+    result = await session.execute(stmt)  # тип ChunkedIteratorResult
+    user.group = next(result)[0]
     await session.commit()
 
 
@@ -35,7 +37,7 @@ async def get_group(session, telegram_id):
 async def get_groups(session):
     stmt = select(Group.id, Group.name).select_from(Group)
     result = await session.execute(stmt)
-    return '\n'.join([f'{group.id} - {group.name}' for group in result])
+    return '\n\n'.join([f'{group.name}' for group in result])
 
 
 async def get_lessons(session, telegram_id, type_of_week, day):
@@ -44,7 +46,7 @@ async def get_lessons(session, telegram_id, type_of_week, day):
     s = aliased(Schedule)
     ls = aliased(Lesson)
     tables = join(Schedule, Lesson, Schedule.lesson_id == Lesson.id)
-    query = (select(s.audience, ls.name).select_from(tables).
+    query = (select(s.number_of_lesson, s.audience, ls.name).select_from(tables).
              where(s.group == group, s.day == days[day[1:]],
                    s.type.in_([types_of_week[type_of_week], None]))
              .order_by(s.number_of_lesson)).distinct()

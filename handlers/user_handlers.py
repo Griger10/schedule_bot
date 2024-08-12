@@ -7,7 +7,6 @@ from fluentogram import TranslatorRunner
 from keyboards.keyboards import build_command_keyboard
 from keyboards.main_menu import set_main_menu
 from sqlalchemy.ext.asyncio import AsyncSession
-from utils.utils import formatter
 
 router = Router()
 
@@ -53,11 +52,14 @@ async def day_handler(message: Message, i18n: TranslatorRunner):
 async def schedule_handler(callback_query: CallbackQuery, session: AsyncSession, i18n: TranslatorRunner):
     try:
         day = callback_query.data.split('-')[0]
+
         type_of_week = callback_query.data.split('-')[1]
 
         lessons_data = await get_lessons(session, callback_query.from_user.id, type_of_week, day)
 
-        result = await formatter(lessons_data)
+        result = '\n\n'.join(f'{i} --- {item[2]} --- {item[1]}' for i, item in zip(range(1, 6), lessons_data))
+
+        print(result)
 
         await callback_query.message.edit_text(i18n.day.schedule() + '\n\n' + result)
 
@@ -71,7 +73,7 @@ async def schedule_handler(callback_query: CallbackQuery, session: AsyncSession,
 @router.message(Command(commands=['set_group']))
 async def set_group_handler(message: Message, session: AsyncSession, i18n: TranslatorRunner):
     try:
-        await update_group(session, message.from_user.id, message.text.split()[1])
+        await update_group(session, message.from_user.id, message.text.split()[1].lower().strip())
         await message.answer(i18n.group.success())
     except Exception as e:
         logger.error('Error while processing set_group command', exc_info=e)
