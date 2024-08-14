@@ -47,6 +47,7 @@ handlers:
     filters: [critical-filter]
 
 loggers:
+
   user_handlers:
     level: WARNING
     handlers: [error-file]

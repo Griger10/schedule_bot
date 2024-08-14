@@ -28,7 +28,11 @@ async def start_handler(message: Message, i18n: TranslatorRunner, bot: Bot):
 async def help_handler(message: Message, session, i18n: TranslatorRunner):
     try:
         groups = await get_groups(session)
-        await message.answer(text=i18n.help.full() + '\n\n' + groups + '\n\n' + i18n.example.example())
+
+        text = (i18n.help.full() + '\n' + i18n.line.line() + '\n' + groups + '\n' +
+                i18n.line.line() + '\n' + i18n.example.example())
+
+        await message.answer(text=text)
 
     except Exception as e:
         logger.error('Error while processing help command', exc_info=e)
@@ -57,11 +61,11 @@ async def schedule_handler(callback_query: CallbackQuery, session: AsyncSession,
 
         lessons_data = await get_lessons(session, callback_query.from_user.id, type_of_week, day)
 
-        result = '\n\n'.join(f'{i} --- {item[2]} --- {item[1]}' for i, item in zip(range(1, 6), lessons_data))
+        result = '\n\n'.join(f'{item[0]} --- {item[2]} --- {item[1]}' for item in lessons_data)
 
-        print(result)
+        text = i18n.day.schedule() + '\n' + i18n.line.line() + '\n' + result + '\n' + i18n.line.line()
 
-        await callback_query.message.edit_text(i18n.day.schedule() + '\n\n' + result)
+        await callback_query.message.edit_text(text)
 
         await callback_query.answer()
 
