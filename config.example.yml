@@ -1,0 +1,7 @@
+bot:
+  token:
+  admin_id:
+
+db:
+  dsn:
+  is_echo:
