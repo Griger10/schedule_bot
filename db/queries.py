@@ -50,7 +50,6 @@ async def get_lessons(session, telegram_id, type_of_week, day):
              where(s.group == group, s.day == days[day[1:]],
                    or_(s.type.is_(None), s.type == types_of_week[type_of_week]))
              .order_by(s.number_of_lesson)).distinct()
-    print(query)
     result = await session.execute(query)
     return result.all()
 
