@@ -9,9 +9,9 @@ class Schedule(Base):
     __tablename__ = 'schedule'
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    day: Mapped[int]
+    day: Mapped[int] = mapped_column(index=True)
     number_of_lesson: Mapped[int]
     audience: Mapped[str]
     lesson_id: Mapped[int] = mapped_column(ForeignKey("lessons.id"))
     type: Mapped[int | None]
-    group: Mapped[int] = mapped_column(ForeignKey("groups.id"))
+    group: Mapped[int] = mapped_column(ForeignKey("groups.id"), index=True)
