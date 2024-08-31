@@ -1,6 +1,5 @@
 import asyncio
 import sys
-from asyncio import WindowsSelectorEventLoopPolicy
 from logging.config import fileConfig
 
 from db import Base
@@ -23,10 +22,9 @@ if config.config_file_name is not None:
 
 def set_event_loop():
     if sys.platform == 'win32':
+        from asyncio import WindowsSelectorEventLoopPolicy
         asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())
 
-
-set_event_loop()
 
 # add your model's MetaData object here
 # for 'autogenerate' support
