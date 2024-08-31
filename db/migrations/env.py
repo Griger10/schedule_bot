@@ -1,6 +1,10 @@
 import asyncio
+import sys
+from asyncio import WindowsSelectorEventLoopPolicy
 from logging.config import fileConfig
 
+from db import Base
+from read_config import get_config, DbConfig
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
@@ -16,11 +20,22 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+
+def set_event_loop():
+    if sys.platform == 'win32':
+        asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())
+
+
+set_event_loop()
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
+db_config = get_config(DbConfig, 'db')
+config.set_main_option('sqlalchemy.url', str(db_config.dsn))
+target_metadata = Base.metadata
+
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
