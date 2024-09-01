@@ -21,6 +21,7 @@ async def start_handler(message: Message, i18n: TranslatorRunner, bot: Bot):
         await message.answer(text=i18n.start.start(username=username))
 
     except Exception as e:
+        print(e)
         logger.error('Error while processing start command', exc_info=e)
 
 

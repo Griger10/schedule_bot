@@ -3,7 +3,6 @@ import sys
 import logging.config
 import yaml
 from aiogram import Bot, Dispatcher
-from db import Base
 from middlewares import DatabaseMiddleware, TrackAllUsersMiddleware
 from middlewares.i18n import TranslatorRunnerMiddleware
 from sqlalchemy import text
